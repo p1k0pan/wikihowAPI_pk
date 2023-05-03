@@ -7,10 +7,10 @@ wikihowAPI_pk is basically base on [vigilant-umbrella/wikiHowUnofficialAPI
 
 - [x] Return map(json) format for server use
 - [x] Video Parser in Method section: each method is either one picture or video
-- [] Video Parser in section: some page would have videos after method section
-- [] Ingredients parser
-- [] Parer to show more tipps
-- [] Make `<li>` inside a Text visible after parsing
+- [ ] Video Parser in section: some page would have videos after method section
+- [ ] Ingredients parser
+- [ ] Parer to show more tipps
+- [ ] Make `<li>` inside a Text visible after parsing
 
 ## Installation
 
