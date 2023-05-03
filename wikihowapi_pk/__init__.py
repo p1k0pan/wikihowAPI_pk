@@ -4,8 +4,8 @@ wikihowAPI_pk
 API to extract data from wikiHow.
 """
 
-__version__ = '0.0.2'
-__author__ = 'p1k0pan'
+__version__ = '0.0.3'
+__author__ = 'Aniket Sharma, Ashok Arora, p1k0pan'
 __credits__ = 'Aniket Sharma & Ashok Arora & p1k0pan'
 
 from bs4 import BeautifulSoup
@@ -159,6 +159,7 @@ class Article:
         self._warnings = []
         self._tips = []
         self._ingredients=[]
+        self._video=None
 
         self._parsed = False
         if not lazy:
@@ -166,6 +167,12 @@ class Article:
 
     def __repr__(self):
         return self.title
+
+    @property
+    def video(self):
+        if not self._parsed:
+            self._parse()
+        return self._video
 
     @property
     def url(self):
@@ -369,10 +376,20 @@ class Article:
             self._parse_warnings(soup)
             self._parse_tips(soup)
             self._parse_ingredients(soup)
+            self._parse_video(soup)
 
             self._parsed = True
         except Exception as e:
             raise ParseError
+
+    def _parse_video(self, soup):
+        html = soup.find('div', {'class': "section video sticky"})
+        if html:
+            video = html.find("iframe", {"class": "embedvideo lazy content-fill"})
+            src = video["data-src"]
+            self._video=src
+        else:
+            self._video=""
 
 
     def _parse_title(self, soup):
@@ -699,6 +716,7 @@ class Article:
             'ingredients': self.ingredients,
             'n_methods': self.n_methods,
             'methods': self.methods,
+            'video': self.video,
             'num_votes': self.num_votes,
             'percent_helpful': self.percent_helpful,
             'is_expert': self.is_expert,
