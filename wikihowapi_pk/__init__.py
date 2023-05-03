@@ -190,7 +190,11 @@ class Article:
         """
         if not self._parsed:
             self._parse()
-        return self._methods
+        methods_list = []
+        for method in self._methods:
+            methods_list.append(method.get())
+        return methods_list
+        # return self._methods
 
     @property
     def n_methods(self):
@@ -363,6 +367,7 @@ class Article:
             raise ParseError
         else:
             count = 0
+            video_prefix_addr = "https://www.wikihow.com/video"
             for method_html in methods_html:
                 span = method_html.find('span', {'class': 'mw-headline'})
                 count += 1
@@ -384,6 +389,17 @@ class Article:
                             pic = str(html)[i:].replace('data-src="', '')
                             pic = pic[:pic.find('"')]
                             pictures_list[pic_count] = pic
+                        else:
+                            video = list.find('div', {'class': 'video-player'}) # assume every step have one either picture or video
+                            if video:
+                                video = video.find('video')
+                                i = str(video).find('data-src=')
+                                pic = str(video)[i:].replace('data-src="', '')
+                                pic = pic[:pic.find('"')]
+                                pic = video_prefix_addr + pic
+                                pictures_list[pic_count] = pic
+                            else:
+                                pictures_list[pic_count] = "This step no pictures/videos"
                         pic_count += 1
                 count_steps = 0
                 for html in step_html:
