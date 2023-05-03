@@ -10,7 +10,7 @@ __credits__ = 'Aniket Sharma & Ashok Arora & p1k0pan'
 
 from bs4 import BeautifulSoup
 import urllib.request
-from wikihowapi_pk.exceptions import *
+from exceptions import *
 from datetime import datetime
 import re
 
@@ -686,6 +686,8 @@ class Article:
                 else:
                     return None
 
+    
+
     def get(self):
         """Method to return a dictionary of class members.
 
@@ -803,5 +805,6 @@ def search_wikihow(query, max_results=10, lang='en'):
 
 if __name__ == '__main__':
     """This file can only be loaded as a module."""
-    exit()
-
+    article = Article("https://www.wikihow.com/Cook-Chicken")
+    a = article.get()
+    print(article.get())
