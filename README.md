@@ -1,13 +1,16 @@
-# wikiHowUnofficialAPI
+# wikihowAPI_pk
 
-wikiHowUnofficilAPI aims to provide a Python-based interface to extract useful information from wikiHow articles such as article summary, steps, images, etc. in an easy-to-use way.
+wikihowAPI_pk is basically base on [vigilant-umbrella/wikiHowUnofficialAPI
+](https://github.com/vigilant-umbrella/wikiHowUnofficialAPI.git) but add more parser on it.
 
-- [Installation](#install)
-- [Usage](#usage)
-  - [Random HowTo](#random-howto)
-  - [Article Details](#article-details)
-  - [Images](#images)
-  - [Search](#search)
+## New features
+
+- [x] Return map(json) format for server use
+- [x] Video Parser in Method section: each method is either one picture or video
+- [] Video Parser in section: some page would have videos after method section
+- [] Ingredients parser
+- [] Parer to show more tipps
+- [] Make `<li>` inside a Text visible after parsing
 
 ## Installation
 
@@ -83,3 +86,19 @@ max_results = 1
 how_tos = wha.search_wikihow("sleep", max_results)
 print(how_tos[0])
 ```
+
+### Json as ouput
+
+The fields in map are basically the same as [Article Details](#article-details)
+
+```python
+import wikihowunofficialapi as wha
+
+article = wha.Article('https://www.wikihow.com/Train-a-Dog')
+article_json :Map = article.get()
+```
+
+## Credit
+
+Most of the codes are base on [vigilant-umbrella/wikiHowUnofficialAPI
+](https://github.com/vigilant-umbrella/wikiHowUnofficialAPI.git)
