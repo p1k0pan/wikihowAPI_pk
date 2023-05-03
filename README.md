@@ -15,7 +15,7 @@ wikihowAPI_pk is basically base on [vigilant-umbrella/wikiHowUnofficialAPI
 ## Installation
 
 ```bash
-pip install wikiHowUnofficialAPI
+pip install wikiHowUnofficialAPI, wikihowAPI-pk
 ```
 
 ## Usage
