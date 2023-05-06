@@ -9,6 +9,7 @@ wikihowAPI_pk is basically base on [vigilant-umbrella/wikiHowUnofficialAPI
 - [x] Video Parser in Method section: each method is either one picture or video
 - [x] Ingredients parser
 - [x] Video Parser in section: some page would have videos after method section
+- [x] Parse the search page of wikihow
 - [ ] Parer to show more tipps
 
 ## Installation
@@ -84,6 +85,39 @@ import wikihowunofficialapi as wha
 max_results = 1
 how_tos = wha.search_wikihow("sleep", max_results)
 print(how_tos[0])
+```
+
+### Parse for wiki search page
+
+```python
+import wikihowunofficialapi as wha
+how_tos: list = wha.search_wikihow_link("housing bubble")
+return JsonResponse({"results": how_tos})
+```
+
+Output:
+
+```json
+{
+  "results": [
+    {
+      "url": "https://www.wikihow.com/Make-Bubble-Solution",
+      "img_url": "https://www.wikihow.com/images/thumb/8/8b/Make-Bubble-Solution-Step-10-Version-9.jpg/-crop-250-145-250px-Make-Bubble-Solution-Step-10-Version-9.jpg",
+      "title": "How to Make a Homemade Bubble Mixture (With and Without Glycerin)",
+      "update": "Updated 5 months ago",
+      "views": "1,692,651 views",
+      "sp_verif": "Quality Tested"
+    },
+    {
+      "url": "https://www.wikihow.com/Take-a-Bubble-Bath",
+      "img_url": "https://www.wikihow.com/images/thumb/0/0b/Take-a-Bubble-Bath-Step-8.jpg/-crop-250-145-193px-Take-a-Bubble-Bath-Step-8.jpg",
+      "title": "How to Take a Bubble Bath",
+      "update": "Updated 3 months ago",
+      "views": "63,888 views",
+      "sp_verif": ""
+    }
+  ]
+}
 ```
 
 ### Json as ouput

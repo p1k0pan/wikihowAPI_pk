@@ -4,7 +4,7 @@ wikihowAPI_pk
 API to extract data from wikiHow.
 """
 
-__version__ = '0.0.3'
+__version__ = '0.0.5'
 __author__ = 'Aniket Sharma, Ashok Arora, p1k0pan'
 __credits__ = 'Aniket Sharma & Ashok Arora & p1k0pan'
 
@@ -791,6 +791,62 @@ class WikiHow:
             if 0 < max_results < count:
                 return
 
+    @ staticmethod
+    def search_homepage(search_term, max_results=10, lang='en') -> list:
+        lang = lang.split('-')[0].lower()
+        if lang not in WikiHow.lang2url:
+            raise UnsupportedLanguage
+        search_url = WikiHow.lang2url[lang] + \
+            'wikiHowTo?search='+urllib.parse.quote(search_term)
+        content = urllib.request.urlopen(search_url)
+        read_content = content.read()
+        soup = BeautifulSoup(read_content, 'html.parser').findAll('a', attrs={
+            'class': 'result_link'})
+
+        result: list = [None]*max_results
+        count = 0
+        for link in soup:
+            result_dict: dict= {}
+            if (count >=max_results):
+                break
+
+            url = link.get('href')
+            if not url.startswith('http'):
+                url = 'http://' + url
+
+            img = link.find('div', {'class': 'result_thumb'})
+            style_attr = img.get('style')
+            img_rul = style_attr.split('url(')[1].split(')')[0]
+
+
+            result_data = link.find('div', {'class': 'result_data'})
+            title = result_data.find('div',{'class': 'result_title'}).text
+            views = result_data.find('li', {'class': 'sr_view'}).text.strip()
+            update = result_data.find('li', {'class': 'sr_updated'}).text
+            update = update[:8].lstrip()+" "+update[8:].strip()
+            sp_verif = result_data.find('li', {'class': 'sp_verif'})
+            if sp_verif:
+                sp_verif = sp_verif.text.strip()
+            else:
+                sp_verif = ""
+
+
+
+            result_dict["url"]=url
+            result_dict["img_url"]=img_rul
+            result_dict["title"]=title
+            result_dict["update"] = update
+            result_dict['views'] = views
+            result_dict['sp_verif'] = sp_verif
+
+            result[count] = result_dict
+            count+=1
+
+        return result
+
+
+
+
 
 def random_article(lang='en'):
     """Method to return a random wikiHow article.
@@ -817,6 +873,9 @@ def search_wikihow(query, max_results=10, lang='en'):
         list: A list containing the names of the Wikhow articles from the search result.
     """
     return list(WikiHow.search(query, max_results, lang))
+
+def search_wikihow_link(query, max_results=10, lang='en'):
+    return list(WikiHow.search_homepage(query, max_results, lang))
 
 
 if __name__ == '__main__':
